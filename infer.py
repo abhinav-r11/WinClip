@@ -80,7 +80,8 @@ def main(args):
 
     # Get model directory, image directory, etc.
     model_dir, img_dir, logger_dir, model_name, csv_path = get_dir_from_args(**kwargs)
-
+    kwargs['out_size_h'] = kwargs['resolution']
+    kwargs['out_size_w'] = kwargs['resolution']
     # Initialize model
     model = WinClipAD(**kwargs)
     model = model.to(device)
