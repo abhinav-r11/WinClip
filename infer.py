@@ -3,7 +3,7 @@ import cv2
 from PIL import Image
 import numpy as np
 from WinCLIP import WinClipAD
-from utils.metrics import denormalization
+#from utils.metrics import denormalization
 
 def single_image_inference(model, image_path: str, device: str, resolution: int = 400):
     """
@@ -35,7 +35,7 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
 
     # Post-process output
     output = output.cpu().numpy()  # Convert to numpy
-    output = denormalization(output[0])  # Apply denormalization if needed
+    #output = denormalization(output[0])  # Apply denormalization if needed
 
     return output
 
