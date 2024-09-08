@@ -28,6 +28,7 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
     :return: Output scores for the image.
     """
     # Load and preprocess the image
+    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
     image = Image.open(image_path).convert('RGB')
     image = image.resize((resolution, resolution))
 
@@ -43,6 +44,7 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
     model.build_text_feature_gallery('candle')
     # Run inference
     with torch.no_grad():
+        transformed_image = transformed_image.to(device)
         output = model(transformed_image)
 
     # Post-process output
