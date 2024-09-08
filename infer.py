@@ -12,10 +12,10 @@ from utils.training_utils import *
 from WinCLIP import *
 from utils.eval_utils import *
 #from utils.metrics import denormalization
+import matplotlib.pyplot as plt
 
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
-
 
 def single_image_inference(model, image_path: str, device: str, resolution: int = 400):
     """
@@ -28,7 +28,6 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
     :return: Output scores for the image.
     """
     # Load and preprocess the image
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
     image = Image.open(image_path).convert('RGB')
     image = image.resize((resolution, resolution))
 
@@ -47,14 +46,37 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
         transformed_image = transformed_image.to(device)
         output = model(transformed_image)
 
-    # Post-process output
-    #output = [o.cpu().numpy() for o in output]
-    #output = output[0].numpy()  # Convert to numpy
-    #output = denormalization(output[0])  # Apply denormalization if needed
-
     return output
 
-# Example usage
+def display_output(output, image_path):
+    """
+    Display the model output and the input image.
+    
+    :param output: The output scores or results from the model.
+    :param image_path: The path to the input image.
+    """
+    # Load the image
+    image = Image.open(image_path)
+
+    # Convert output to numpy array if necessary
+    if isinstance(output, torch.Tensor):
+        output = output.cpu().numpy()
+
+    # Plot the image and output
+    fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+    
+    # Display image
+    ax[0].imshow(image)
+    ax[0].set_title('Input Image')
+    ax[0].axis('off')
+    
+    # Display output
+    ax[1].imshow(output, cmap='hot')
+    ax[1].set_title('Model Output')
+    ax[1].axis('off')
+    
+    plt.show()
+
 def run_inference_on_image(model, image_path):
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
@@ -62,12 +84,11 @@ def run_inference_on_image(model, image_path):
     output = single_image_inference(model, image_path, device)
     
     print(f"Output for {image_path}: {output}")
+    
+    # Display the output
+    display_output(output, image_path)
+    
     return output
-
-
-
-
-
 
 def main(args):
     kwargs = vars(args)
@@ -94,7 +115,6 @@ def main(args):
     im_paths = [os.path.join(folder_path, file) for file in os.listdir(folder_path) ]
     image_path = im_paths[0]
     # Call the function with the model and the path to the image
-    #image_path = 'path_to_your_image.jpg'
     run_inference_on_image(model, image_path)
 
 def get_args():
@@ -133,4 +153,3 @@ if __name__ == '__main__':
     args = get_args()
     os.environ['CUDA_VISIBLE_DEVICES'] = f"{args.gpu_id}"
     main(args)
-
