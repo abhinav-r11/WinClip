@@ -94,24 +94,32 @@ def main(args):
     run_inference_on_image(model, image_path)
 
 def get_args():
-    parser = argparse.ArgumentParser(description='Model loading')
+    parser = argparse.ArgumentParser(description='Anomaly detection')
     parser.add_argument('--dataset', type=str, default='visa', choices=['mvtec', 'visa'])
     parser.add_argument('--class-name', type=str, default='candle')
+
     parser.add_argument('--img-resize', type=int, default=240)
     parser.add_argument('--img-cropsize', type=int, default=240)
     parser.add_argument('--resolution', type=int, default=400)
+
     parser.add_argument('--batch-size', type=int, default=128)
-    parser.add_argument('--vis', type=bool, choices=[True, False], default=True)
+    parser.add_argument('--vis', type=str2bool, choices=[True, False], default=True)
     parser.add_argument("--root-dir", type=str, default="./result_winclip")
-    parser.add_argument("--load-memory", type=bool, default=True)
-    parser.add_argument("--cal-pro", type=bool, default=False)
+    parser.add_argument("--load-memory", type=str2bool, default=True)
+    parser.add_argument("--cal-pro", type=str2bool, default=False)
     parser.add_argument("--experiment_indx", type=int, default=0)
     parser.add_argument("--gpu-id", type=int, default=0)
-    parser.add_argument("--pure-test", type=bool, default=False)
+
+    # pure test
+    parser.add_argument("--pure-test", type=str2bool, default=False)
+
+    # method related parameters
     parser.add_argument('--k-shot', type=int, default=0)
-    parser.add_argument('--scales', nargs='+', type=int, default=(2, 3))
-    parser.add_argument("--backbone", type=str, default="ViT-B-16-plus-240", choices=['ViT-B-16-plus-240'])
+    parser.add_argument('--scales', nargs='+', type=int, default=(2, 3, ))
+    parser.add_argument("--backbone", type=str, default="ViT-B-16-plus-240",
+                        choices=['ViT-B-16-plus-240'])
     parser.add_argument("--pretrained_dataset", type=str, default="laion400m_e32")
+
     parser.add_argument("--use-cpu", type=int, default=0)
     
     return parser.parse_args()
