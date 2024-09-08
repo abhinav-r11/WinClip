@@ -3,6 +3,14 @@ import cv2
 from PIL import Image
 import numpy as np
 from WinCLIP import WinClipAD
+import argparse
+from datasets import *
+from datasets import dataset_classes
+from utils.csv_utils import *
+from utils.metrics import *
+from utils.training_utils import *
+from WinCLIP import *
+from utils.eval_utils import *
 #from utils.metrics import denormalization
 
 def single_image_inference(model, image_path: str, device: str, resolution: int = 400):
@@ -56,10 +64,7 @@ def run_inference_on_image(model, image_path):
 
 
 
-import argparse
-import torch
-from WinCLIP import WinClipAD
-from utils import get_dataloader_from_args, get_dir_from_args, setup_seed
+
 
 def main(args):
     kwargs = vars(args)
