@@ -55,10 +55,6 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
 def run_inference_on_image(model, image_path):
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
-    # Load model with required arguments
-    model = WinClipAD()  # Add your model initialization parameters here
-    model = model.to(device)
-
     # Run inference
     output = single_image_inference(model, image_path, device)
     
