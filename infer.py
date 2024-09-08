@@ -13,6 +13,10 @@ from WinCLIP import *
 from utils.eval_utils import *
 #from utils.metrics import denormalization
 
+def str2bool(v):
+    return v.lower() in ("yes", "true", "t", "1")
+
+
 def single_image_inference(model, image_path: str, device: str, resolution: int = 400):
     """
     Run inference on a single image using WinClipAD model.
