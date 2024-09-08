@@ -40,7 +40,7 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
 
     # Set the model to eval mode
     model.eval_mode()
-
+    model.build_text_feature_gallery('candle')
     # Run inference
     with torch.no_grad():
         output = model(transformed_image)
