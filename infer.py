@@ -46,8 +46,9 @@ def single_image_inference(model, image_path: str, device: str, resolution: int 
         output = model(transformed_image)
 
     # Post-process output
-    output = output.cpu().numpy()  # Convert to numpy
-    output = denormalization(output[0])  # Apply denormalization if needed
+    #output = [o.cpu().numpy() for o in output]
+    output = output[0].cpu().numpy()  # Convert to numpy
+    output = denormalization(output)  # Apply denormalization if needed
 
     return output
 
